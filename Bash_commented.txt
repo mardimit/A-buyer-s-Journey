@@ -1,0 +1,56 @@
+## At first we choose our directory with cd command
+$ cd /c/Users/xkats/Desktop/BigDataContent
+
+## Count the rows of the dataset clicks
+$ wc -l yoochoose-clicks.txt
+33003944 
+
+## Add headers
+$ sed -i '1 i\Session,Date,Time,Product_id,category' yoochoose-clicks.txt
+
+## Create time dataset
+$ awk -F "\"*,\"*" '{print $1 , $2}' yoochoose-clicks.txt > time.txt
+
+## Change the dot to space
+$ sed -i 's/\./ /g' time.txt 
+
+## Add Headers to columns in time dataset
+$ sed -i '1 i\Session Date Time' time.txt
+
+## Keep the two columns and output a new table tim.
+$ awk -F "\"* \"*" '{print $1 , $2}' time.txt > tim.txt
+
+## Erase T (not used )
+xkats@LAPTOP-0FAEUNH2 MINGW64 ~/Desktop
+$ sed -i 's/T/,/g' yoochoose-clicks.txt
+
+
+## Perform some checks on buys dataset
+## To take only two columns
+$ awk -F "\"*,\"*" '{print $1 , $3}' time_to.csv > t.csv
+## Find a record
+$ awk -F , ' $1 == "\"11276101\"" {print;}' yoochoose-buys.txt
+
+## Count the Buys
+## awk -F "\"* \"*" '{print $1 , $3}' yoochoose_buys.txt> t.xtx
+## First output to to e.txt
+awk -F ',' '{print $1}' t.txt | sort | uniq -c > e.txt
+  
+
+## Count the clicks   
+## Keep column 1
+$ awk -F "\"*,\"*" '{print $1}' yoochoose-clicks.txt > cli.txt
+#Count
+$ awk -F ',' '{print $1}' cli.txt | sort | uniq -c > e_cl.txt
+
+## Sort both datsets
+
+## Combine clicks+buys
+$ awk 'FNR==NR{k[$2]=$2;next} {print $1,$2,k[$1]}' e_sorted.txt e_c_sorted.txt > mer.txt  
+#Add tittle
+$ sed -i '1 i\Clicks Session Buys' mer.txt
+
+### For the mistake we had to come back follow the same code but perform this change before the merge stageand preform the actual merge in python.
+$  sed -e "s/\s\{1,\}/,/g" e_c_sorted.txt > e_c_sorty.txt
+
+
